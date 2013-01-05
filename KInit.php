@@ -59,7 +59,7 @@ class KInit {
 		
 		// ensure the username is not empty and consists of only valid characters
 		if (@strlen($username) === 0) $pass = false;
-		if (@preg_match('/^[a-z0-9+-_.,]*$/i', $username) !== 1) $pass = false;
+		if (@preg_match('/^[a-zA-Z0-9+-_\\.,@]*$/', $username) !== 1) $pass = false;
 		
 		$success = false;
 		
