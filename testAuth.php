@@ -1,18 +1,15 @@
 <?php
-error_reporting(E_ALL | E_NOTICE);
-require_once(dirname(__FILE__) . '/Auth.php');
+error_reporting(-1);
+ini_set('display_errors', '1');
+
+require_once('KInit.php');
 ?>
-<form action="" method="post">
-<input type="text" name="username" /><br />
-<input type="password" name="password" /><br />
-<input type="submit" /><br />
+
+<form action='' method=post>
+	<input type=text name=username placeholder=Username /><br />
+	<input type=password name=password placeholder=Password /><br />
+	<input type=submit /><br />
 </form>
-Result: 
-<?php
-if (!$_POST) return;
+<?php if (!$_POST) exit(); ?>
 
-$result = $auth->login($_POST['username'], $_POST['password']);
-
-if ($result) echo 'Success';
-else echo 'Failure';
-?>
+Result: <?php echo KInit::auth(@$_POST['username'], @$_POST['password']) ? 'Success' : 'False'; ?>
