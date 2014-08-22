@@ -99,6 +99,14 @@ class KInit {
 		 * for reading and writing
 		 */
 		$pipes = array();
+    
+		// 2014/08/08 //github.com/gima/kinit.php/pull/1
+		//            wstaples reported getting "Undefined offset: 0"
+		// fix was to change stderr to append mode.
+		// 	2 => array('pipe', 'w'),
+		// to
+		// 	2 => array('pipe', 'a'),
+    
 		$this->process = proc_open(
 			$cmd,
 			array(
