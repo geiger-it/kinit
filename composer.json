@@ -1,0 +1,8 @@
+{
+	"name": "xcore/kinit",
+	"description": "Validate credentials using Kerberos's \"kinit\" executable. For PHP.",
+	"type": "library",
+	"autoload": {
+		"classmap": ["KInit.php"]
+	}
+}
