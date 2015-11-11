@@ -1,8 +1,19 @@
 {
-	"name": "xcore/kinit",
-	"description": "Validate credentials using Kerberos's \"kinit\" executable. For PHP.",
-	"type": "library",
-	"autoload": {
-		"classmap": ["KInit.php"]
-	}
+    "name": "dirish/kinit",
+    "description": "Validate credentials using the Kerberos `kinit` executable. For PHP.",
+    "license": "LGPL",
+    "authors": [
+        {
+            "name": "Devon Irish",
+            "email": "dirish@geiger.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {
+            "KInit": "src/"
+        }
+    }
 }
