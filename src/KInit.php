@@ -40,54 +40,49 @@ class KInit {
      */
 
     /** kinit's process handle */
-    protected $process;
+    private $process;
 
     /** kinit's stdin stream / write to this */
-    protected $stdin;
+    private $stdin;
 
     /** kinit's stdout stream / read from here */
-    protected $stdout;
+    private $stdout;
 
     /** kinit's stderr stream / read from here */
-    protected $stderr;
+    private $stderr;
 
     /** kinit's exit code */
-    protected $exitcode = null;
-
-    /**
-     * Forces a login attempt to wait for this many milliseconds before
-     * returning. Chat with cs.joensuu.fi administrator resulted the need for
-     * this to avoids brute-forcing
-     */
-    public $executionDelay = 1000;
+    private $exitcode = null;
 
     /**
      * Test if the supplied username and password combination is valid using
      * 'kinit' executable.
-     * This function waits $executionDelay before returning.
-     * 
+     *
+     * @param  string  $username
+     * @param  string  $password
+     * @param  int  $delay  (in milliseconds)
      * @return boolean - True if combination was valid, false otherwise.
      */
-    public function auth($username, $password) {
-        $loginStartTime = microtime(true);
+    public static function auth($username, $password, $delay = 1000) {
+        $start = microtime(true);
 
-        $pass = true;
+        $validInput = true;
 
         // ensure the username is not empty and consists of only valid characters
-        if (@strlen($username) === 0) $pass = false;
-        if (@preg_match('/^[a-zA-Z0-9+-_\\.,@]*$/', $username) !== 1) $pass = false;
+        if (@strlen($username) === 0) $validInput = false;
+        if (@preg_match('/^[a-zA-Z0-9+-_\\.,@]*$/', $username) !== 1) $validInput = false;
 
         $success = false;
 
-        if ($pass) {
+        if ($validInput) {
             $success = $this->_auth($username, $password);
             $this->_cleanup();
         }
 
-        // sleep until $executionDelay has passed from loginStartTime
-        $sleepDiff = ($this->executionDelay*1000) - (microtime(true) - $loginStartTime);
-        if ($sleepDiff >= 0) {
-            usleep($sleepDiff);
+        // sleep until $delay has passed from $start
+        $sleep = ($delay*1000) - (microtime(true) - $start);
+        if ($sleep >= 0) {
+            usleep($sleep);
         }
 
         return $success;
@@ -98,7 +93,7 @@ class KInit {
      * 
      * @return boolean - True if credentials were valid, false otherwise.
      */
-    protected function _auth($username, $password) {
+    private function _auth($username, $password) {
 
         $cmd = "kinit -l 1s -c /dev/null {$username}";
         /*
@@ -186,7 +181,7 @@ class KInit {
      * @param string $data - Data to be written.
      * @return bool - True if successful, false otherwise (and on timeout).
      */
-    protected function _write($stream, $timeout, $data) {
+    private function _write($stream, $timeout, $data) {
         if (!is_resource($stream)) return false;
 
         // save time when to timeout
@@ -228,7 +223,7 @@ class KInit {
      *                 array ([0] = data from stream 1, [1] = data from stream 2).
      */
 
-    protected function _readUntilExit($stream1, $stream2, $timeout) {
+    private function _readUntilExit($stream1, $stream2, $timeout) {
         if (!is_resource($stream1)) return false;
         if (!is_resource($stream2)) return false;
 
@@ -299,7 +294,7 @@ class KInit {
     /**
      * Cleans up 'kinit' process.
      */
-    protected function _cleanup() {
+    private function _cleanup() {
         @fclose($this->stdin);
         @fclose($this->stdout);
         @fclose($this->stderr);
