@@ -75,8 +75,9 @@ class KInit {
         $success = false;
 
         if ($validInput) {
-            $success = $this->_auth($username, $password);
-            $this->_cleanup();
+            $kinit = new KInit();
+            $success = $kinit->_auth($username, $password);
+            $kinit->_cleanup();
         }
 
         // sleep until $delay has passed from $start
