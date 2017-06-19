@@ -96,7 +96,7 @@ class KInit {
      */
     private function _auth($username, $password) {
 
-        $cmd = "kinit -c /dev/null {$username}";
+        $cmd = "sudo kinit -l 45s -c /dev/null {$username}";
         /*
          * parameters
          * ----------
